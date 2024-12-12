@@ -12,11 +12,31 @@
 
     <!-- css -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
 
-<body>
-    <header></header>
-    <main></main>
+<body class="work-sans bg-white px-24">
+
+    <header class="text-center py-14">
+        <h1 class="text-3xl font-semibold text-black">AI Universe Hub</h1>
+        <button class="btn btn-error text-white my-5">Sort By Date</button>
+    </header>
+
+    <main class="py-14">
+        <section id="cards" class="grid grid-cols-3 gap-20">
+
+        </section>
+        <section class="text-center mt-10">
+            <button id="seeAllBtn" onclick="showAllTrigger()" class="btn btn-error text-white my-5 ">See More</button>
+        </section>
+
+    </main>
+
     <footer></footer>
     <script src="script.js"></script>
 </body>
