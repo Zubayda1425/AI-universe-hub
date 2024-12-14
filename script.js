@@ -12,9 +12,86 @@ const infoPannel = async (status) => {
     aiUniverse(hubs, status);
 }
 
+const detailsInfo = async (id) => {
+    const response = await fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`);
+    const dataJson = await response.json();
+    const data = dataJson.data;
 
-const showdetails = () => {
+    showModal(data);
+}
+
+
+const showModal = (item) => {
     console.log('clicked');
+    console.log(item);
+    const modalContainer = document.getElementById('show_modal');
+    modalContainer.innerText = '';
+
+    const modal = document.createElement('div');
+    modal.setAttribute('class', `relative mx-28 `);
+    modal.innerHTML = `
+
+        <div class="grid grid-cols-2 gap-x-10 bg-white rounded-xl  	p-5 ">
+            <div class="bg-[#EB57570D] border-[#EB5757] border-2 rounded-xl p-8">
+                <h1 class="text-black font-semibold text-xl">
+                    ${item.description}
+                </h1>
+                <div class="grid grid-cols-3 text-center gap-x-5 my-7 font-semibold">
+                    <div class="bg-white text-[#03A30A] py-5 ">
+                        <p>${Array.isArray(item.pricing) ? item?.pricing[0]?.price?.split('/').join('/<br>') : item.pricing || 'Free Of Cost/'} <br> 
+                        ${Array.isArray(item.pricing) ? item.pricing[0].plan : item.pricing || 'Basic'}</p>
+                    </div>
+                    <div class="bg-white text-[#F28927] py-5">
+                        <p>${Array.isArray(item.pricing) ? item?.pricing[1]?.price?.split('/').join('/<br>') : item.pricing || 'Free Of Cost/'} <br> 
+                        ${Array.isArray(item.pricing) ? item?.pricing[1]?.plan : item.pricing || 'Pro'} </p>
+                    </div>
+                    <div class="bg-white text-[#EB5757] py-5">
+                        <p>${Array.isArray(item.pricing) ? item?.pricing[2]?.price?.slice(0,11).split(' ').join('<br>') : item.pricing || 'Free Of Cost/'}  
+                        ${Array.isArray(item.pricing) ? item?.pricing[2]?.plan : item.pricing || 'Enterprise'} </p>
+                    </div>
+                </div>
+                <div class="flex justify-between">
+                    <div>
+                        <h1 class="text-black text-2xl font-semibold">Features</h1>
+                        <p class="text-[#585858] ">. Customizable responses<br>
+                            . Multilingual support<br>
+                            . Seamless integration
+                        </p>
+                    </div>
+                    <div class="mr-5">
+                        <h1 class="text-black text-2xl font-semibold">Integrations</h1>
+                        <p class="text-[#585858] ">
+                            . FB Messenger <br>
+                            . Slack <br>
+                            . Telegram
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="border-2 rounded-xl p-10 ">
+                 <div class="mb-10 relative">
+                    <img src="${item.image_link[0]}" alt="">
+                    <p class="bg-red-500 absolute py-1 px-3 rounded-md text-white top-0 right-0 m-3">94% Accuracy</p>
+                </div>
+                <div class="text-center">
+                    <h1 class="font-semibold text-2xl text-black mb-5">Hi, how are you doing today?</h1>
+                    <p class="text-[#585858] font-medium text-base">I'm doing well, thank you for asking. How can
+                        I<br>assist you today?
+                    </p>
+                </div>
+            </div>   
+        </div>
+
+        <form method="dialog">
+            <button class=" btn btn-sm text-white btn-circle bg-[#EB5757] border-none absolute -right-2 -top-2 ">✕</button>
+        </form>   
+        
+    `;
+
+    modalContainer.appendChild(modal);
+    show_modal.showModal();
 }
 
 const aiUniverse = (hubs, status) => {
@@ -38,9 +115,9 @@ const aiUniverse = (hubs, status) => {
         });
         console.log(hub);
 
-        
+
         const cardItems = document.createElement('div');
-        cardItems.setAttribute('onclick', 'showdetails()');
+        cardItems.setAttribute('onclick', `detailsInfo("${hub.id}")`);
         cardItems.classList = `card bg-white border-t-2  shadow-xl`;
         cardItems.innerHTML = `
         <figure class="px-5 pt-5">
@@ -62,9 +139,13 @@ const aiUniverse = (hubs, status) => {
         </div>
         `;
         cardContainer.appendChild(cardItems);
+
     });
+
     hubs = [];
 }
+
+
 
 
 infoPannel(false);
