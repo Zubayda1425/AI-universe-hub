@@ -24,6 +24,34 @@ const detailsInfo = async (id) => {
 const showModal = (item) => {
     console.log('clicked');
     console.log(item);
+    let feature = [];
+    let integration = [];
+
+    for (fea in item.features) {
+        const value = '. ' + item.features[fea].feature_name + '<br>';
+        feature.push(value);
+    }
+    if (Array.isArray(item.integrations)) {
+        for (const int of item.integrations) {
+            const value = '. ' + int + '<br>';
+            integration.push(value);
+        }
+    }
+    else {
+        const value = 'No Data Found';
+        integration.push(value);
+    }
+    let acc_text = ``;
+    const acc = item.accuracy.score;
+    // console.log(typeof (acc));
+    if (typeof (acc) == 'number') {
+        const acc_num = acc * 100;
+        acc_text = `<p id="accuracy" class="bg-red-500 absolute py-1 px-3 rounded-md text-white top-0 right-0 m-3">${acc_num}% Accuracy</p>`;
+        // console.log(html);
+    }
+
+
+
     const modalContainer = document.getElementById('show_modal');
     modalContainer.innerText = '';
 
@@ -46,24 +74,21 @@ const showModal = (item) => {
                         ${Array.isArray(item.pricing) ? item?.pricing[1]?.plan : item.pricing || 'Pro'} </p>
                     </div>
                     <div class="bg-white text-[#EB5757] py-5">
-                        <p>${Array.isArray(item.pricing) ? item?.pricing[2]?.price?.slice(0,11).split(' ').join('<br>') : item.pricing || 'Free Of Cost/'}  
+                        <p>${Array.isArray(item.pricing) ? item?.pricing[2]?.price?.slice(0, 11).split(' ').join('<br>') : item.pricing || 'Free Of Cost/'}  
                         ${Array.isArray(item.pricing) ? item?.pricing[2]?.plan : item.pricing || 'Enterprise'} </p>
                     </div>
                 </div>
                 <div class="flex justify-between">
                     <div>
                         <h1 class="text-black text-2xl font-semibold">Features</h1>
-                        <p class="text-[#585858] ">. Customizable responses<br>
-                            . Multilingual support<br>
-                            . Seamless integration
+                        <p class="text-[#585858] "> ${feature.join('')}
                         </p>
                     </div>
                     <div class="mr-5">
                         <h1 class="text-black text-2xl font-semibold">Integrations</h1>
                         <p class="text-[#585858] ">
-                            . FB Messenger <br>
-                            . Slack <br>
-                            . Telegram
+                        ${integration.join('')}
+                        
                         </p>
                     </div>
                 </div>
@@ -73,7 +98,7 @@ const showModal = (item) => {
             <div class="border-2 rounded-xl p-10 ">
                  <div class="mb-10 relative">
                     <img src="${item.image_link[0]}" alt="">
-                    <p class="bg-red-500 absolute py-1 px-3 rounded-md text-white top-0 right-0 m-3">94% Accuracy</p>
+                    ${acc_text}
                 </div>
                 <div class="text-center">
                     <h1 class="font-semibold text-2xl text-black mb-5">Hi, how are you doing today?</h1>
@@ -96,7 +121,7 @@ const showModal = (item) => {
 
 const aiUniverse = (hubs, status) => {
 
-    console.log(hubs);
+    // console.log(hubs);
     if (!status) {
         hubs = hubs.slice(0, 6);
     }
